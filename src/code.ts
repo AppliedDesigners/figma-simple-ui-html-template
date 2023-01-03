@@ -1,3 +1,8 @@
+interface IMessageInput {
+  type: string,
+  value: string | number[]
+}
+
 const insertText = async (value: string) => {
   await figma.loadFontAsync({ family: "Inter", style: "Regular" })
   const textNode = figma.createText()
@@ -21,11 +26,11 @@ const insertPieChart = async (value: number[]) => {
   let start = 0;
 
   for (const num of value) {
-    const c = Math.sqrt(start / segmentsTotal)
+    const color = Math.sqrt(start / segmentsTotal)
     const ellipse = figma.createEllipse()
     frame.appendChild(ellipse)
     ellipse.resizeWithoutConstraints(width, height)
-    ellipse.fills = [{ type: 'SOLID', color: {r: c, g: c, b: c} }]
+    ellipse.fills = [{ type: 'SOLID', color: {r: color, g: color, b: color} }]
     ellipse.constraints = {horizontal: 'STRETCH', vertical: 'STRETCH'}
     ellipse.arcData = {
       startingAngle: (start / segmentsTotal - 0.25) * 2 * Math.PI,
@@ -39,11 +44,6 @@ const insertPieChart = async (value: number[]) => {
 }
 
 figma.showUI(__html__)
-
-interface IMessageInput {
-  type: string,
-  value: string | number[]
-}
 
 figma.ui.onmessage = async ({ type, value }: IMessageInput) => {
   if (type === 'text') {
