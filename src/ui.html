@@ -1,0 +1,49 @@
+<link rel="stylesheet" href="https://static.figma.com/api/figma-extension-api-0.0.1.css">
+<!-- Text -->
+<h2>Insert text</h2>
+<p>
+  Text:
+  <input id="insert-text-input" placeholder="Add any text">
+</p>
+<b id="errors"></b>
+<p><button id="insert-text-button">Insert Text</button></p>
+<!-- Pie Chart -->
+<h2>Pie Chart</h2>
+<p>
+  Segments:
+  <input id="pie-chart-input" placeholder="1, 2, 3, ..." value="1, 2, 3, 4">
+</p>
+<b id="errors"></b>
+<p><button id="pie-chart-button">Create Pie Chart</button></p>
+<script>
+  document.querySelector('#insert-text-button').onclick = () => {
+    const text = document.querySelector('#insert-text-input').value
+
+    if (!text) {
+      showError('Error: Text must have a value');
+      return
+    }
+
+    parent.postMessage({ pluginMessage: { type: 'text', value: text } }, '*')
+  }
+  
+  document.querySelector('#pie-chart-button').onclick = () => {
+    const text = document.querySelector('#pie-chart-input').value
+
+    let numbers = text.split(',').map(x => Math.max(0, parseInt(x, 10)))
+    if (numbers.length < 2) {
+      showError('Error: Must have at least two segments');
+      return
+    }
+    if (numbers.some(x => isNaN(x))) {
+      showError('Error: All segments must be numbers');
+      return
+    }
+
+    parent.postMessage({ pluginMessage: { type: 'pie-chart', value: numbers } }, '*')
+  }
+
+  showError = errorMessage => {
+    document.querySelector('#errors').textContent = errorMessage
+  }
+</script>

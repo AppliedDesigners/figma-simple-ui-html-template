@@ -1,0 +1,8 @@
+{
+  "name": "SimpleUIHtmlTemplate",
+  "id": "1188035056898420648",
+  "api": "1.0.0",
+  "ui": "dist/ui.html",
+  "main": "dist/code.js",
+  "editorType": ["figma", "figjam"]
+}
